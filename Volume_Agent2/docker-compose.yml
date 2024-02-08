@@ -1,0 +1,26 @@
+version: '3'
+services:
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node_exporter2
+    networks:
+      - dockermonitoring_network_DinD  # Utilisez le même nom de réseau que dans l'autre machine
+    
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro  
+      - /:/rootfs:ro     
+
+    ports:
+      - 9102:9100
+    command:        
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'  
+      - '--collector.filesystem.ignored-mount-points'
+      - '^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'
+
+networks:
+  dockermonitoring_network_DinD:
+    external:  # Utilisez le même réseau externe que dans l'autre machine
+      name: dockermonitoring_network_DinD
+

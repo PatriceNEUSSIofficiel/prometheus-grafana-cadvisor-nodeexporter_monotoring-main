@@ -1,0 +1,49 @@
+global:
+  scrape_interval: 15s
+
+rule_files:
+  - alert.rules.yml
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - 'localhost:9093'
+scrape_configs:
+  - job_name: 'prometheus_metrics'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: 'node_exporter_metrics'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9100','prometheus-target-1:9100','prometheus-target-2:9100']
+
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  - job_name: cadvisor
+    static_configs:
+      - targets: ['mycadvisor:8080']
+
+  
+
+  - job_name: node_exporter
+    static_configs:
+      - targets: ['node_exporter1:9100', 'node_exporter2:9100', 'node_exporter3:9100']
+
+
+
+
+    
+  
+
+
+  # - job_name: agent2
+  #   static_configs:
+  #     - targets: ['node_exporter2:9100']
+
+  # - job_name: agent3
+  #   static_configs:
+  #     - targets: ['node_exporter3:9100']
